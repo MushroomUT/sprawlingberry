@@ -27,7 +27,7 @@ defaultContentLanguageInSubdir = true
     languageName = "中文"
     languageCode = "zh-CN"
     weight = 2
-    title = "漫莓"
+    title = "爬爬梅"
     [languages.zh.params]
       subtitle = "小说"
 
