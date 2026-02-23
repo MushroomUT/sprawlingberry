@@ -1,0 +1,83 @@
+{{ define "main" }}
+<div class="book-wrap">
+
+  {{/* Root novels page: show carousel of child novel sections */}}
+  {{ if eq .RelPermalink (relLangURL "/novels/") }}
+
+    {{ $books := where .Pages "Kind" "section" }}
+    {{ $books = sort $books "Title" }}
+
+    {{ if gt (len $books) 0 }}
+      {{ $first := index $books 0 }}
+      <div class="book-carousel" data-carousel>
+        <button class="book-arrow" type="button" data-prev aria-label="Previous">←</button>
+
+        <a class="book-card" href="{{ $first.RelPermalink }}">
+          <div class="book-title">{{ $first.Title }}</div>
+          <p class="book-sub">{{ with $first.Params.tagline }}{{ . }}{{ else }}{{ $first.Summary }}{{ end }}</p>
+          <div class="book-cover">
+            {{ $cover := $first.Params.cover | default "/img/books/dad-must-die/cover.svg" }}
+            <img src="{{ $cover | relURL }}" alt="" />
+          </div>
+        </a>
+
+        <button class="book-arrow" type="button" data-next aria-label="Next">→</button>
+      </div>
+
+      <script>
+      (function(){
+        const root = document.querySelector('[data-carousel]');
+        if(!root) return;
+        const books = {{ jsonify $books }};
+        let i = 0;
+        const card = root.querySelector('.book-card');
+        const title = root.querySelector('.book-title');
+        const sub = root.querySelector('.book-sub');
+        const img = root.querySelector('.book-cover img');
+        function render(){
+          const b = books[i];
+          card.href = b.RelPermalink;
+          title.textContent = b.Title;
+          sub.textContent = (b.Params && b.Params.tagline) ? b.Params.tagline : (b.Summary || '');
+          const cover = (b.Params && b.Params.cover) ? b.Params.cover : '/img/books/dad-must-die/cover.svg';
+          img.src = cover;
+        }
+        root.querySelector('[data-prev]').addEventListener('click', function(){ i = (i-1+books.length)%books.length; render(); });
+        root.querySelector('[data-next]').addEventListener('click', function(){ i = (i+1)%books.length; render(); });
+        render();
+      })();
+      </script>
+
+    {{ else }}
+      <p class="meta">(No novels yet.)</p>
+    {{ end }}
+
+  {{ else }}
+
+    {{/* Inside a specific novel section: show cover+intro + chapter directory */}}
+    <div class="novel-hero">
+      <div class="novel-hero-left">
+        <div class="novel-title">{{ .Title }}</div>
+        <p class="novel-tagline">{{ with .Params.tagline }}{{ . }}{{ else }}{{ .Summary }}{{ end }}</p>
+      </div>
+      <div class="novel-hero-right">
+        {{ $cover := .Params.cover | default "/img/books/dad-must-die/cover.svg" }}
+        <img class="novel-cover" src="{{ $cover | relURL }}" alt="" />
+      </div>
+    </div>
+
+    <div style="height:18px"></div>
+    <h2 style="margin:0 0 12px; font-size:28px;">目录</h2>
+
+    {{ $chapters := where .Pages "Kind" "page" }}
+    {{ $chapters = sort $chapters "Weight" }}
+
+    <div class="chapter-grid">
+      {{ range $chapters }}
+        <a class="chapter-pill" href="{{ .RelPermalink }}">{{ .Title }}</a>
+      {{ end }}
+    </div>
+
+  {{ end }}
+</div>
+{{ end }}

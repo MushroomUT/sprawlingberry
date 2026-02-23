@@ -47,7 +47,7 @@ defaultContentLanguageInSubdir = true
     weight = 1
   [[languages.zh.menu.main]]
     name = "小说"
-    pageRef = "/posts"
+    pageRef = "/novels"
     weight = 2
   [[languages.zh.menu.main]]
     name = "绘画"
@@ -73,7 +73,7 @@ defaultContentLanguageInSubdir = true
     weight = 1
   [[languages.en.menu.main]]
     name = "Stories"
-    pageRef = "/posts"
+    pageRef = "/novels"
     weight = 2
   [[languages.en.menu.main]]
     name = "Art"

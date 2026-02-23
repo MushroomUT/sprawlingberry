@@ -20,7 +20,7 @@
       {{ .Content }}
     </div>
 
-    {{ if eq .Section "posts" }}
+    {{ if or (eq .Section "posts") (eq .Section "novels") }}
       <div class="chapter-nav">
         {{ with .PrevInSection }}
           <a class="chapter-btn" href="{{ .RelPermalink }}">上一章</a>
