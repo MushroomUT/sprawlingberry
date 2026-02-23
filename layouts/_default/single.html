@@ -2,11 +2,14 @@
   <article class="post">
     <header>
       <h1>{{ .Title }}</h1>
-      <p class="meta">
-        <time datetime="{{ .Date }}">{{ .Date.Format "2006-01-02" }}</time>
-        {{ with .Params.series }} · {{ delimit . ", " }}{{ end }}
-        {{ with .Params.tags }} · {{ delimit . ", " }}{{ end }}
-      </p>
+      {{ $hasDate := and (ne .Date.Year 1) (ne .Date.Format "2006-01-02" "0001-01-01") }}
+      {{ if or $hasDate .Params.series .Params.tags }}
+        <p class="meta">
+          {{ if $hasDate }}<time datetime="{{ .Date }}">{{ .Date.Format "2006-01-02" }}</time>{{ end }}
+          {{ with .Params.series }}{{ if $hasDate }} · {{ end }}{{ delimit . ", " }}{{ end }}
+          {{ with .Params.tags }} · {{ delimit . ", " }}{{ end }}
+        </p>
+      {{ end }}
       {{ if .IsTranslated }}
         <p class="translations">
           {{ range .Translations }}

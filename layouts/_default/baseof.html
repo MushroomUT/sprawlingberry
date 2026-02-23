@@ -11,8 +11,15 @@
     {{ end }}
   </head>
   <body>
+    {{ $hideSidebar := false }}
+    {{ if and (eq .Section "novels") (ne .Kind "section") }}
+      {{ $hideSidebar = true }}
+    {{ end }}
+
     <div class="shell">
-      {{ partial "sidebar.html" . }}
+      {{ if not $hideSidebar }}
+        {{ partial "sidebar.html" . }}
+      {{ end }}
       <div class="main">
         <main class="content container">
           {{ block "main" . }}{{ end }}
