@@ -2,7 +2,7 @@
 title: "DAD MUST DIE"
 summary: "Placeholder blurb"
 params:
-  cover: "/img/books/dad-must-die/cover.png"
-  tagline: "Blurb… (replace later)"
+  cover: "/img/books/dad-must-die/cover.jpg"
+  tagline: "(CN version available)"
 ---
 
