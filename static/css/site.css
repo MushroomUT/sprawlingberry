@@ -84,8 +84,15 @@ body{ margin:0; background:var(--paper); color:var(--ink); font:16px/1.65 ui-ser
 @media (max-width: 700px){
   /* Keep the left sidebar (like the sketch) instead of collapsing into a top bar */
   .shell{ flex-direction:row; }
-  .sidebar{ width:170px; }
-  .avatar{ width:56px; height:56px; margin-bottom:10px; border-width:3px; }
-  .side-link{ font-size:20px; padding:12px 10px; border-width:2.5px; }
-  .content{ padding: 18px 0 34px; }
+  .sidebar{ width:155px; }
+  .avatar{ width:52px; height:52px; margin-bottom:10px; border-width:3px; }
+  .side-link{ font-size:18px; padding:10px 10px; border-width:2.5px; }
+  .content{ padding: 14px 0 26px; }
+
+  /* Novels page: make cover card fit phone screens */
+  .book-arrow{ height: 220px; width:44px; }
+  .book-cover{ width:min(320px, 72vw); aspect-ratio: 3 / 4; border-width:4px; border-radius:18px; box-shadow:none; }
+  .book-cover img{ object-fit: cover; }
+  .book-title{ font-size:32px; letter-spacing:2px; }
+  .book-sub{ font-size:16px; max-width: 26ch; }
 }
