@@ -2,7 +2,8 @@
   <article class="post">
     <header>
       <h1>{{ .Title }}</h1>
-      {{ $hasDate := and (ne .Date.Year 1) (ne .Date.Format "2006-01-02" "0001-01-01") }}
+      {{/* Hide nonsense default date (0001-01-01). Show date only if it looks real. */}}
+      {{ $hasDate := gt .Date.Year 1900 }}
       {{ if or $hasDate .Params.series .Params.tags }}
         <p class="meta">
           {{ if $hasDate }}<time datetime="{{ .Date }}">{{ .Date.Format "2006-01-02" }}</time>{{ end }}

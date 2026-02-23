@@ -12,7 +12,9 @@
   </head>
   <body>
     {{ $hideSidebar := false }}
-    {{ if and (eq .Section "novels") (ne .Kind "section") }}
+    {{/* Hide sidebar inside a specific novel (e.g. /zh/novels/dad-must-die/...) but keep it on /zh/novels/ */}}
+    {{ $novelsRoot := (relLangURL "/novels/") }}
+    {{ if and (hasPrefix .RelPermalink $novelsRoot) (ne .RelPermalink $novelsRoot) }}
       {{ $hideSidebar = true }}
     {{ end }}
 
