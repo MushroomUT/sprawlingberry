@@ -71,9 +71,10 @@ body{ margin:0; background:var(--paper); color:var(--ink); font:16px/1.65 ui-ser
   .side-link{ font-size:22px; padding:14px 12px; }
 }
 @media (max-width: 700px){
-  .shell{ flex-direction:column; }
-  .sidebar{ width:auto; border-right:0; border-bottom:4px solid var(--line); }
-  .side-nav{ flex-direction:row; flex-wrap:wrap; }
-  .side-link{ font-size:20px; border-left:3px solid var(--line); border-right:3px solid var(--line); border-top:3px solid var(--line); }
-  .side-link + .side-link{ border-top:3px solid var(--line); }
+  /* Keep the left sidebar (like the sketch) instead of collapsing into a top bar */
+  .shell{ flex-direction:row; }
+  .sidebar{ width:170px; }
+  .avatar{ width:56px; height:56px; margin-bottom:10px; border-width:3px; }
+  .side-link{ font-size:20px; padding:12px 10px; border-width:2.5px; }
+  .content{ padding: 18px 0 34px; }
 }
