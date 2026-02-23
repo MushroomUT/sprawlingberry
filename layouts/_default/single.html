@@ -22,15 +22,17 @@
 
     {{ if or (eq .Section "posts") (eq .Section "novels") }}
       <div class="chapter-nav">
-        {{ with .PrevInSection }}
+        {{/* Hugo's Prev/Next semantics can feel reversed depending on sort; our chapters use weight=1..N.
+             For a reader: 上一章 = smaller number; 下一章 = larger number. */}}
+        {{ with .NextInSection }}
           <a class="chapter-btn" href="{{ .RelPermalink }}">上一章</a>
         {{ else }}
           <span class="chapter-btn" aria-disabled="true" style="opacity:.35">上一章</span>
         {{ end }}
 
-        <a class="chapter-btn center" href="{{ (site.GetPage "posts").RelPermalink }}">目录</a>
+        <a class="chapter-btn center" href="{{ (site.GetPage "novels").RelPermalink }}">目录</a>
 
-        {{ with .NextInSection }}
+        {{ with .PrevInSection }}
           <a class="chapter-btn" href="{{ .RelPermalink }}">下一章</a>
         {{ else }}
           <span class="chapter-btn" aria-disabled="true" style="opacity:.35">下一章</span>
