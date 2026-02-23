@@ -7,7 +7,7 @@
     <nav class="side-nav" aria-label="Primary">
       {{ $current := .RelPermalink }}
       {{ range .Site.Menus.main }}
-        {{ $url := .URL | relLangURL }}
+        {{ $url := .URL | relURL }}
         {{ $active := or (eq $current $url) (and (ne $url "/") (hasPrefix $current $url)) }}
         <a class="side-link{{ if $active }} is-active{{ end }}" href="{{ $url }}">{{ .Name }}</a>
       {{ end }}
