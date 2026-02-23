@@ -1,0 +1,63 @@
+baseURL = "https://sprawlingberry.com/"
+title = "Sprawling Berry"
+# Set this to your preferred default language.
+defaultContentLanguage = "en"
+# Use folders like content/en/... and content/zh/...
+defaultContentLanguageInSubdir = true
+
+# Hugo extended is recommended (Sass/SCSS pipeline). Plain Hugo also works for this repo.
+# If you use Cloudflare Pages, pick the "Hugo" framework preset or install Hugo extended.
+
+[pagination]
+  pagerSize = 12
+
+[params]
+  description = "Fiction blog"
+  author = ""
+
+# Multilingual (optional CN/EN)
+[languages]
+  [languages.en]
+    languageName = "English"
+    weight = 1
+    title = "Sprawling Berry"
+    [languages.en.params]
+      subtitle = "Fiction"
+  [languages.zh]
+    languageName = "中文"
+    languageCode = "zh-CN"
+    weight = 2
+    title = "漫莓"
+    [languages.zh.params]
+      subtitle = "小说"
+
+# Clean URLs and predictable taxonomy
+[permalinks]
+  posts = "/:year/:month/:slug/"
+
+[taxonomies]
+  tag = "tags"
+  series = "series"
+
+[menu]
+  [[menu.main]]
+    name = "Home"
+    pageRef = "/"
+    weight = 1
+  [[menu.main]]
+    name = "Stories"
+    pageRef = "/posts"
+    weight = 2
+  [[menu.main]]
+    name = "Tags"
+    pageRef = "/tags"
+    weight = 3
+  [[menu.main]]
+    name = "About"
+    pageRef = "/about"
+    weight = 4
+
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = false

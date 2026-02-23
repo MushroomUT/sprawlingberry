@@ -1,0 +1,5 @@
+<article class="post-card">
+  <h2><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2>
+  <p class="meta"><time datetime="{{ .Date }}">{{ .Date.Format "2006-01-02" }}</time></p>
+  {{ with .Summary }}<p>{{ . }}</p>{{ end }}
+</article>

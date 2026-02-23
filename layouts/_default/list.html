@@ -1,0 +1,18 @@
+{{ define "main" }}
+  {{ if .IsHome }}
+    <h1>{{ .Site.Title }}</h1>
+    {{ with .Site.Language.Params.subtitle }}<p class="subtitle">{{ . }}</p>{{ end }}
+    <section class="post-list">
+      {{ range first 10 (where .Site.RegularPages "Section" "posts") }}
+        {{ partial "post-card.html" . }}
+      {{ end }}
+    </section>
+  {{ else }}
+    <h1>{{ .Title }}</h1>
+    <section class="post-list">
+      {{ range .Pages }}
+        {{ partial "post-card.html" . }}
+      {{ end }}
+    </section>
+  {{ end }}
+{{ end }}

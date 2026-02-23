@@ -1,0 +1,22 @@
+{{ define "main" }}
+  <article class="post">
+    <header>
+      <h1>{{ .Title }}</h1>
+      <p class="meta">
+        <time datetime="{{ .Date }}">{{ .Date.Format "2006-01-02" }}</time>
+        {{ with .Params.series }} · {{ delimit . ", " }}{{ end }}
+        {{ with .Params.tags }} · {{ delimit . ", " }}{{ end }}
+      </p>
+      {{ if .IsTranslated }}
+        <p class="translations">
+          {{ range .Translations }}
+            <a href="{{ .RelPermalink }}">{{ .Language.LanguageName }}</a>
+          {{ end }}
+        </p>
+      {{ end }}
+    </header>
+    <div class="content">
+      {{ .Content }}
+    </div>
+  </article>
+{{ end }}

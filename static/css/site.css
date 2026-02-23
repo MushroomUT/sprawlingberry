@@ -1,0 +1,26 @@
+:root{
+  --bg:#0b0d10; --fg:#e9eef5; --muted:#aab6c5; --link:#9ad1ff; --card:#11151b;
+  --max: 760px;
+  font-synthesis: none;
+}
+@media (prefers-color-scheme: light){
+  :root{ --bg:#ffffff; --fg:#111827; --muted:#4b5563; --link:#2563eb; --card:#f3f4f6; }
+}
+*{ box-sizing:border-box; }
+body{ margin:0; background:var(--bg); color:var(--fg); font:16px/1.65 ui-serif, Georgia, Cambria, "Times New Roman", Times, serif; }
+.container{ max-width:var(--max); margin:0 auto; padding: 0 18px; }
+.site-header{ border-bottom:1px solid rgba(125,125,125,.25); padding:14px 0; position:sticky; top:0; background:color-mix(in oklab, var(--bg) 90%, transparent); backdrop-filter: blur(8px); }
+.header-row{ display:flex; justify-content:space-between; align-items:baseline; gap:12px; }
+.site-title{ font-weight:700; text-decoration:none; color:var(--fg); }
+.nav{ display:flex; flex-wrap:wrap; gap:12px; align-items:baseline; }
+.nav-link{ color:var(--muted); text-decoration:none; }
+.nav-link:hover{ color:var(--fg); }
+main{ padding: 26px 0 60px; }
+.subtitle{ margin-top:-8px; color:var(--muted); }
+.post-card{ background:var(--card); border-radius:12px; padding:16px 16px; margin: 0 0 12px; }
+.post-card h2{ margin:0 0 6px; font-size:1.25rem; }
+.post-card a{ color:var(--link); }
+.meta{ margin:0; color:var(--muted); font-size:.95rem; }
+.post h1{ margin-bottom:6px; }
+.content a{ color:var(--link); }
+.site-footer{ border-top:1px solid rgba(125,125,125,.25); padding: 22px 0; color:var(--muted); }

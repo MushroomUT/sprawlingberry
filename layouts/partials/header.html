@@ -1,0 +1,15 @@
+<header class="site-header">
+  <div class="container header-row">
+    <a class="site-title" href="{{ .Site.Home.RelPermalink }}">{{ .Site.Title }}</a>
+    <nav class="nav">
+      {{ range .Site.Menus.main }}
+        <a class="nav-link" href="{{ .URL | relLangURL }}">{{ .Name }}</a>
+      {{ end }}
+      <span class="lang">
+        {{ range .AllTranslations }}
+          <a class="nav-link" href="{{ .RelPermalink }}">{{ .Language.LanguageName }}</a>
+        {{ end }}
+      </span>
+    </nav>
+  </div>
+</header>
