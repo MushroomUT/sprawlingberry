@@ -90,9 +90,12 @@ body{ margin:0; background:var(--paper); color:var(--ink); font:16px/1.65 ui-ser
   .content{ padding: 14px 0 26px; }
 
   /* Novels page: make cover card fit phone screens */
-  .book-arrow{ height: 220px; width:44px; }
-  .book-cover{ width:min(320px, 72vw); aspect-ratio: 3 / 4; border-width:4px; border-radius:18px; box-shadow:none; }
+  .book-arrow{ height: 200px; width:44px; }
+
+  /* Make cover smaller, text larger */
+  .book-cover{ width:min(240px, 58vw); aspect-ratio: 3 / 4; border-width:4px; border-radius:18px; box-shadow:none; }
   .book-cover img{ object-fit: cover; }
-  .book-title{ font-size:32px; letter-spacing:2px; }
-  .book-sub{ font-size:16px; max-width: 26ch; }
+
+  .book-title{ font-size:40px; letter-spacing:2px; }
+  .book-sub{ font-size:18px; max-width: 30ch; }
 }
