@@ -1,7 +1,7 @@
 baseURL = "https://sprawlingberry.com/"
 title = "Sprawling Berry"
 # Set this to your preferred default language.
-defaultContentLanguage = "en"
+defaultContentLanguage = "zh"
 # Use folders like content/en/... and content/zh/...
 defaultContentLanguageInSubdir = true
 
@@ -39,23 +39,58 @@ defaultContentLanguageInSubdir = true
   tag = "tags"
   series = "series"
 
-[menu]
-  [[menu.main]]
-    name = "Home"
-    pageRef = "/"
+# Menus are language-specific to match the hand-drawn UI
+[languages.zh.menu]
+  [[languages.zh.menu.main]]
+    name = "诗歌"
+    pageRef = "/poems"
     weight = 1
-  [[menu.main]]
+  [[languages.zh.menu.main]]
+    name = "小说"
+    pageRef = "/posts"
+    weight = 2
+  [[languages.zh.menu.main]]
+    name = "绘画"
+    pageRef = "/art"
+    weight = 3
+  [[languages.zh.menu.main]]
+    name = "CG"
+    pageRef = "/cg"
+    weight = 4
+  [[languages.zh.menu.main]]
+    name = "手工"
+    pageRef = "/craft"
+    weight = 5
+  [[languages.zh.menu.main]]
+    name = "同人本"
+    pageRef = "/doujin"
+    weight = 6
+
+[languages.en.menu]
+  [[languages.en.menu.main]]
+    name = "Poems"
+    pageRef = "/poems"
+    weight = 1
+  [[languages.en.menu.main]]
     name = "Stories"
     pageRef = "/posts"
     weight = 2
-  [[menu.main]]
-    name = "Tags"
-    pageRef = "/tags"
+  [[languages.en.menu.main]]
+    name = "Art"
+    pageRef = "/art"
     weight = 3
-  [[menu.main]]
-    name = "About"
-    pageRef = "/about"
+  [[languages.en.menu.main]]
+    name = "CG"
+    pageRef = "/cg"
     weight = 4
+  [[languages.en.menu.main]]
+    name = "Craft"
+    pageRef = "/craft"
+    weight = 5
+  [[languages.en.menu.main]]
+    name = "Doujin"
+    pageRef = "/doujin"
+    weight = 6
 
 [markup]
   [markup.goldmark]

@@ -15,8 +15,27 @@
         </p>
       {{ end }}
     </header>
+
     <div class="content">
       {{ .Content }}
     </div>
+
+    {{ if eq .Section "posts" }}
+      <div class="chapter-nav">
+        {{ with .PrevInSection }}
+          <a class="chapter-btn" href="{{ .RelPermalink }}">上一章</a>
+        {{ else }}
+          <span class="chapter-btn" aria-disabled="true" style="opacity:.35">上一章</span>
+        {{ end }}
+
+        <a class="chapter-btn center" href="{{ (site.GetPage "posts").RelPermalink }}">目录</a>
+
+        {{ with .NextInSection }}
+          <a class="chapter-btn" href="{{ .RelPermalink }}">下一章</a>
+        {{ else }}
+          <span class="chapter-btn" aria-disabled="true" style="opacity:.35">下一章</span>
+        {{ end }}
+      </div>
+    {{ end }}
   </article>
 {{ end }}

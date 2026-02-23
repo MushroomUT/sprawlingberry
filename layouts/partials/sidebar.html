@@ -1,0 +1,24 @@
+<aside class="sidebar">
+  <div class="sidebar-inner">
+    <a class="avatar" href="{{ .Site.Home.RelPermalink }}" aria-label="Home">
+      <img src="{{ "/img/avatar.svg" | relURL }}" alt="" />
+    </a>
+
+    <nav class="side-nav" aria-label="Primary">
+      {{ $current := .RelPermalink }}
+      {{ range .Site.Menus.main }}
+        {{ $url := .URL | relLangURL }}
+        {{ $active := or (eq $current $url) (and (ne $url "/") (hasPrefix $current $url)) }}
+        <a class="side-link{{ if $active }} is-active{{ end }}" href="{{ $url }}">{{ .Name }}</a>
+      {{ end }}
+    </nav>
+
+    <div class="side-lang">
+      {{ if gt (len .Site.Languages) 1 }}
+        {{ range .AllTranslations }}
+          <a class="lang-link" href="{{ .RelPermalink }}">{{ .Language.LanguageName }}</a>
+        {{ end }}
+      {{ end }}
+    </div>
+  </div>
+</aside>

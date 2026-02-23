@@ -1,5 +1,8 @@
 ---
-title: "Home"
+title: "Me"
 ---
 
-Welcome. This is a writing-first fiction blog.
+# Me
+
+Self-introduction (we'll replace this after you send details).
+

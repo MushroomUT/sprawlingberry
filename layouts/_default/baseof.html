@@ -11,10 +11,14 @@
     {{ end }}
   </head>
   <body>
-    {{ partial "header.html" . }}
-    <main class="container">
-      {{ block "main" . }}{{ end }}
-    </main>
-    {{ partial "footer.html" . }}
+    <div class="shell">
+      {{ partial "sidebar.html" . }}
+      <div class="main">
+        <main class="content container">
+          {{ block "main" . }}{{ end }}
+        </main>
+        {{ partial "footer.html" . }}
+      </div>
+    </div>
   </body>
 </html>

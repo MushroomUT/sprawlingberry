@@ -1,0 +1,29 @@
+{{ define "main" }}
+<div class="book-wrap">
+  <div class="book-carousel" aria-label="Novel carousel">
+    <a class="book-arrow" href="#" aria-label="Previous">←</a>
+
+    <div class="book-card">
+      <div class="book-title">DAD MUST DIE</div>
+      <p class="book-sub">简介……（你发我简介/封面后我替换）</p>
+      <p class="book-sub">
+        <a href="{{ (site.GetPage "posts/hello-world").RelPermalink }}">进入阅读</a>
+      </p>
+    </div>
+
+    <a class="book-arrow" href="#" aria-label="Next">→</a>
+  </div>
+
+  <div style="height:22px"></div>
+
+  <h2 style="margin:0 0 12px; font-size:28px;">目录</h2>
+
+  {{ range .Pages.ByDate.Reverse }}
+    <div class="post-card">
+      <h2><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2>
+      <p class="meta">{{ .Date.Format "2006-01-02" }}</p>
+      {{ with .Summary }}<div class="meta">{{ . }}</div>{{ end }}
+    </div>
+  {{ end }}
+</div>
+{{ end }}
