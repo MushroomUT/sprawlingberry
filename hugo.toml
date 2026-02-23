@@ -1,7 +1,7 @@
 baseURL = "https://sprawlingberry.com/"
 title = "Sprawling Berry"
 # Set this to your preferred default language.
-defaultContentLanguage = "zh"
+defaultContentLanguage = "en"
 # Use folders like content/en/... and content/zh/...
 defaultContentLanguageInSubdir = true
 
