@@ -19,6 +19,7 @@ defaultContentLanguageInSubdir = true
 [languages]
   [languages.en]
     languageName = "English"
+    contentDir = "content/en"
     weight = 1
     title = "Sprawling Berry"
     [languages.en.params]
@@ -26,6 +27,7 @@ defaultContentLanguageInSubdir = true
   [languages.zh]
     languageName = "中文"
     languageCode = "zh-CN"
+    contentDir = "content/zh"
     weight = 2
     title = "爬爬梅"
     [languages.zh.params]
