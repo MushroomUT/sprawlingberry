@@ -45,6 +45,12 @@ class AO3Parser(HTMLParser):
         self._p_buf = []
         self._tag_stack = []
 
+    def handle_startendtag(self, tag, attrs):
+        # XHTML-style self-closing tags like <br /> land here.
+        if self._in_chapter_content and tag == "br":
+            self._p_buf.append("\n\n")
+        return
+
     def handle_starttag(self, tag, attrs):
         attrs = dict(attrs)
         self._tag_stack.append(tag)
@@ -69,7 +75,8 @@ class AO3Parser(HTMLParser):
             if tag == "p":
                 self._p_buf = []
             if tag == "br":
-                self._p_buf.append("\n")
+                # Treat HTML <br> as a paragraph break for nicer reading in Markdown.
+                self._p_buf.append("\n\n")
             if tag in ("em", "i"):
                 self._p_buf.append("*")
             if tag in ("strong", "b"):
@@ -87,9 +94,15 @@ class AO3Parser(HTMLParser):
                 txt = "".join(self._p_buf)
                 txt = html.unescape(txt)
                 txt = txt.replace("\u00a0", " ")
-                # normalize internal whitespace but keep newlines we inserted
-                parts = [WS_RE.sub(" ", x).strip() for x in txt.split("\n")]
-                txt = "\n".join([p for p in parts if p != ""])
+
+                # Normalize spaces but preserve intentional paragraph breaks (blank lines).
+                txt = txt.replace("\r\n", "\n")
+                txt = re.sub(r"[\t ]+", " ", txt)
+                # Trim each line but keep empty lines
+                txt = "\n".join([line.strip() for line in txt.split("\n")])
+                # Collapse 3+ newlines to 2
+                txt = re.sub(r"\n{3,}", "\n\n", txt).strip()
+
                 if txt:
                     self.current_chapter["paras"].append(txt)
                 self._p_buf = []
