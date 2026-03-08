@@ -8,19 +8,24 @@
     {{ $books = sort $books "Title" }}
 
     {{ if gt (len $books) 0 }}
-      {{ $first := index $books 0 }}
-      {{ $cover := $first.Params.cover | default "/img/books/dad-must-die/cover.svg" }}
-
       <div class="book-carousel">
         <button class="book-arrow" type="button" aria-label="Previous" disabled>←</button>
 
-        <a class="book-card" href="{{ $first.RelPermalink }}">
-          <div class="book-cover">
-            <img src="{{ $cover | relURL }}" alt="" />
-          </div>
-          <div class="book-title">DAD MUST DIE</div>
-          <p class="book-sub">简介……（占位）</p>
-        </a>
+        <div class="book-scroller">
+          {{ range $books }}
+            {{ $cover := .Params.cover | default "/img/books/dad-must-die/cover.svg" }}
+            {{ $tag := .Params.tagline | default .Summary }}
+            <a class="book-card" href="{{ .RelPermalink }}">
+              <div class="book-cover">
+                <img src="{{ $cover | relURL }}" alt="" />
+              </div>
+              <div class="book-title">{{ .Title }}</div>
+              {{ with $tag }}
+                <p class="book-sub">{{ . }}</p>
+              {{ end }}
+            </a>
+          {{ end }}
+        </div>
 
         <button class="book-arrow" type="button" aria-label="Next" disabled>→</button>
       </div>

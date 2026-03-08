@@ -30,18 +30,37 @@ def clean_text(s: str) -> str:
 
 
 class AO3Parser(HTMLParser):
+    """Parse either:
+
+    1) Calibre-style AO3 HTML exports (older workflow)
+    2) Raw AO3 "view_full_work" HTML pages (current workflow)
+
+    Dependency-free (stdlib HTMLParser).
+    """
+
     def __init__(self):
         super().__init__(convert_charrefs=False)
+
+        # Calibre-export signals
         self.in_h1 = False
+        self.in_h2_heading = False  # <h2 class="heading">Chapter 1: ...
+
+        # AO3 page signals
+        self.in_work_title_h2 = False  # <h2 class="title heading">Work title</h2>
+        self.in_chapter_h3_title = False  # <h3 class="title">Chapter N: ...</h3>
+
+        # Summary capture (both formats end up using blockquote.userstuff somewhere in a "preface")
         self.in_summary_block = False
-        self.in_h2_heading = False
         self.capture_summary = []
+
         self.title = None
 
         self.current_chapter = None  # dict with keys: num,title,paras
         self.chapters = []
 
+        # Chapter content capture
         self._in_chapter_content = False
+        self._content_div_depth = 0  # tracks nested div depth for the current userstuff/module
         self._p_buf = []
         self._tag_stack = []
 
@@ -58,18 +77,41 @@ class AO3Parser(HTMLParser):
         if tag == "h1":
             self.in_h1 = True
 
+        # AO3 page work title
+        if tag == "h2" and attrs.get("class") == "title heading":
+            self.in_work_title_h2 = True
+
         # Summary appears as <blockquote class="userstuff">...</blockquote> in preface meta
+        # (AO3 page uses <blockquote class="userstuff"> inside <div class="summary module">)
         if tag == "blockquote" and attrs.get("class") == "userstuff" and self.title is not None and not self.chapters:
             self.in_summary_block = True
 
-        # Chapter heading: <h2 class="heading">Chapter 1: ...</h2>
+        # Calibre-export chapter heading: <h2 class="heading">Chapter 1: ...</h2>
         if tag == "h2" and attrs.get("class") == "heading":
             self.in_h2_heading = True
 
-        # Chapter content: <div class="userstuff"> ... </div> right after heading block
-        if tag == "div" and attrs.get("class") == "userstuff" and self.current_chapter is not None:
-            # Start capturing content only after we've seen a chapter heading.
-            self._in_chapter_content = True
+        # AO3 page chapter heading (inside <div class="chapter" id="chapter-N"> ...)
+        if tag == "h3" and attrs.get("class") == "title":
+            self.in_chapter_h3_title = True
+            self._h3_title_buf = []
+
+        # Chapter content start:
+        # - Calibre export: <div class="userstuff">
+        # - AO3 page: <div class="userstuff module" role="article"> OR <div class="userstuff"> for one-shots
+        if tag == "div":
+            cls = attrs.get("class") or ""
+            is_userstuff = cls == "userstuff" or cls.startswith("userstuff ") or cls.endswith(" userstuff") or "userstuff" in cls.split()
+
+            # AO3 one-shot pages have a single <div class="userstuff"> under "Work Text" without a Chapter N heading.
+            if is_userstuff and self.current_chapter is None and self.title and not self.chapters and not self.in_summary_block:
+                self.current_chapter = {"num": 1, "title": self.title, "paras": []}
+
+            if is_userstuff and self.current_chapter is not None and not self._in_chapter_content:
+                self._in_chapter_content = True
+                self._content_div_depth = 1
+            elif self._in_chapter_content:
+                # nested div inside content
+                self._content_div_depth += 1
 
         if self._in_chapter_content:
             if tag == "p":
@@ -107,24 +149,38 @@ class AO3Parser(HTMLParser):
                     self.current_chapter["paras"].append(txt)
                 self._p_buf = []
 
-            if tag == "div" and self._in_chapter_content:
-                # Heuristic: closing the userstuff div ends chapter content.
-                # AO3 nesting: a chapter's content is in its own <div class="userstuff">.
-                # When it closes, we stop capture.
-                self._in_chapter_content = False
-                if self.current_chapter and self.current_chapter.get("paras"):
-                    # finalize chapter
-                    self.chapters.append(self.current_chapter)
-                    self.current_chapter = None
+            if tag == "div":
+                self._content_div_depth -= 1
+                if self._content_div_depth <= 0:
+                    # closing the userstuff/module div ends chapter content.
+                    self._in_chapter_content = False
+                    self._content_div_depth = 0
+                    if self.current_chapter and self.current_chapter.get("paras"):
+                        # finalize chapter
+                        self.chapters.append(self.current_chapter)
+                        self.current_chapter = None
 
         if tag == "h1":
             self.in_h1 = False
 
-        if tag == "blockquote" and self.in_summary_block:
-            self.in_summary_block = False
-
         if tag == "h2":
             self.in_h2_heading = False
+            self.in_work_title_h2 = False
+
+        if tag == "h3":
+            if self.in_chapter_h3_title and hasattr(self, "_h3_title_buf"):
+                t = clean_text("".join(self._h3_title_buf))
+                if t:
+                    m = re.match(r"Chapter\s+(\d+)\s*:\s*(.+)", t)
+                    if m:
+                        num = int(m.group(1))
+                        ch_title = m.group(2).strip()
+                        self.current_chapter = {"num": num, "title": ch_title, "paras": []}
+                self._h3_title_buf = []
+            self.in_chapter_h3_title = False
+
+        if tag == "blockquote" and self.in_summary_block:
+            self.in_summary_block = False
 
         # pop stack
         if self._tag_stack:
@@ -136,12 +192,18 @@ class AO3Parser(HTMLParser):
             if t:
                 self.title = t
 
+        if self.in_work_title_h2 and not self.title:
+            t = clean_text(data)
+            if t:
+                self.title = t
+
         if self.in_summary_block:
             # keep raw-ish, we'll join with blank lines later
             t = data
             if t:
                 self.capture_summary.append(t)
 
+        # Calibre-export chapter heading
         if self.in_h2_heading:
             t = clean_text(data)
             if t:
@@ -151,8 +213,12 @@ class AO3Parser(HTMLParser):
                     ch_title = m.group(2).strip()
                     self.current_chapter = {"num": num, "title": ch_title, "paras": []}
 
+        # AO3 page chapter heading: HTML splits text across nodes (<a>Chapter 1</a>: Title)
+        if self.in_chapter_h3_title and hasattr(self, "_h3_title_buf"):
+            self._h3_title_buf.append(data)
+
         if self._in_chapter_content:
-            # Only buffer text inside <p> (or other tags) during chapter content
+            # Buffer text inside chapter content
             self._p_buf.append(data)
 
 
@@ -194,7 +260,9 @@ def main():
     # crude paragraph breaks: AO3 summary has <p> but parser captured text; reflow lightly
     summary = "\n".join([line.strip() for line in summary_raw.splitlines() if line.strip()])
 
-    cover_default = f"/img/books/{args.slug}/cover.png"
+    # User requested: no covers needed for these imports.
+    # Use an existing placeholder so we don't create broken <img> links.
+    cover_default = "/img/books/dad-must-die/cover.svg"
     idx = "\n".join([
         "---",
         f'title: "{p.title.replace("\"", "\\\"")}"',
