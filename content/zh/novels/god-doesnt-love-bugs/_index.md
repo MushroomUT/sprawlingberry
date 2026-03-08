@@ -1,5 +1,5 @@
 ---
-title: "beta"
+title: "神不爱世虫"
 summary: "丝之歌原作解读向作品，鉴证大量提及。时间线为击败失心蕾丝之前。包括了作者认为大黄蜂会对于自己所有结局的思考。时间线为第三幕之后，虚空姊妹结局之前。"
 params:
   cover: "/img/books/dad-must-die/cover.svg"

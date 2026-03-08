@@ -192,9 +192,10 @@ class AO3Parser(HTMLParser):
             if t:
                 self.title = t
 
-        if self.in_work_title_h2 and not self.title:
+        if self.in_work_title_h2:
             t = clean_text(data)
-            if t:
+            if t and t.lower() not in ("beta", "archive of our own"):
+                # Override generic site headings like "beta" captured elsewhere.
                 self.title = t
 
         if self.in_summary_block:

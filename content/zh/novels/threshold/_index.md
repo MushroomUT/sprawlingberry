@@ -1,5 +1,5 @@
 ---
-title: "beta"
+title: "【IDW】【补威/通威】阈值"
 summary: "有一点点点点opm暗示，NTR有。"
 params:
   cover: "/img/books/dad-must-die/cover.svg"

@@ -1,5 +1,5 @@
 ---
-title: "beta"
+title: "【IDW】【all威】死罪可免，活罪难逃"
 summary: "胜者为王败者暖床经典题材，作为官方寇首落马，这个梗不得不写。原作向，接威震天被审判后。时间线自MTMTE#53后改动。不是在键政就是在色色，老威前男友轮转中。 正文有：擎威✅-红威✅-警威、掘地虎威（进行中）-补威、通威✅-塔威✅-sg擎x威 蛋将有：塔威、霸威 Summary："
 params:
   cover: "/img/books/dad-must-die/cover.svg"
