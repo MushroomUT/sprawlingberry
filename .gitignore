@@ -1,0 +1,10 @@
+# Hugo build output
+public/
+resources/
+.hugo_build.lock
+
+# local imports
+import_ao3/
+
+# OS cruft
+.DS_Store
